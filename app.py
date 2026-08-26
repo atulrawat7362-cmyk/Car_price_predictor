@@ -8,7 +8,7 @@ from flask import Flask, request, render_template
 # CREATE FLASK APP
 # ==========================================
 
-application = Flask(__name__)
+app = Flask(__name__)
 
 
 # ==========================================
@@ -103,7 +103,7 @@ for brand in brands:
 # HOME PAGE
 # ==========================================
 
-@application.route("/")
+@app.route("/")
 def home():
 
     return render_template("index.html")
@@ -113,7 +113,7 @@ def home():
 # PREDICTION PAGE
 # ==========================================
 
-@application.route("/predict", methods=["GET", "POST"])
+@app.route("/predict", methods=["GET", "POST"])
 def predict():
 
     # ======================================
@@ -271,4 +271,4 @@ def predict():
 
 if __name__ == "__main__":
 
-    application.run(debug=True)
+    app.run(debug=True)
