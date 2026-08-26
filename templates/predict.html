@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Predict Car Price</title>
+
+
+    <style>
+
+        * {
+
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
+        }
+
+
+        body {
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            min-height: 100vh;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #141e30,
+                    #243b55
+                );
+
+            padding: 40px 20px;
+
+        }
+
+
+        .container {
+
+            max-width: 950px;
+
+            margin: auto;
+
+            background: white;
+
+            padding: 40px;
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 15px 40px
+                rgba(0, 0, 0, 0.3);
+
+        }
+
+
+        h1 {
+
+            text-align: center;
+
+            color: #243b55;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .subtitle {
+
+            text-align: center;
+
+            color: #666;
+
+            margin-bottom: 35px;
+
+        }
+
+
+        .form-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 20px;
+
+        }
+
+
+        .form-group {
+
+            display: flex;
+
+            flex-direction: column;
+
+        }
+
+
+        label {
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+
+            color: #333;
+
+        }
+
+
+        input,
+        select {
+
+            width: 100%;
+
+            padding: 13px;
+
+            border:
+                1px solid #ccc;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+
+            background: white;
+
+            color: #222;
+
+            outline: none;
+
+        }
+
+
+        input:focus,
+        select:focus {
+
+            border-color: #243b55;
+
+            box-shadow:
+                0 0 0 2px
+                rgba(36, 59, 85, 0.1);
+
+        }
+
+
+        .button-container {
+
+            text-align: center;
+
+            margin-top: 35px;
+
+        }
+
+
+        button {
+
+            padding: 15px 50px;
+
+            border: none;
+
+            border-radius: 30px;
+
+            background: #243b55;
+
+            color: white;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+
+        }
+
+
+        button:hover {
+
+            background: #141e30;
+
+            transform:
+                translateY(-2px);
+
+        }
+
+
+        .prediction {
+
+            margin-top: 35px;
+
+            padding: 25px;
+
+            text-align: center;
+
+            background: #f1f5f9;
+
+            border-radius: 12px;
+
+            border:
+                1px solid #e2e8f0;
+
+        }
+
+
+        .prediction h2 {
+
+            color: #243b55;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .price {
+
+            font-size: 36px;
+
+            font-weight: bold;
+
+            color: #111;
+
+        }
+
+
+        .back {
+
+            display: block;
+
+            text-align: center;
+
+            margin-top: 25px;
+
+            color: #243b55;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+        }
+
+
+        .back:hover {
+
+            text-decoration: underline;
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .container {
+
+                padding: 25px;
+
+            }
+
+
+            .form-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <h1>
+        🚗 Car Price Prediction
+    </h1>
+
+
+    <p class="subtitle">
+
+        Enter the details of the used car
+        to estimate its resale price.
+
+    </p>
+
+
+    <form action="/predict"
+          method="POST">
+
+
+        <div class="form-grid">
+
+
+            <!-- =========================
+                 BRAND
+                 ========================= -->
+
+            <div class="form-group">
+
+                <label for="brand">
+                    Brand
+                </label>
+
+                <select
+                    id="brand"
+                    name="brand"
+                    required
+                >
+
+                    <option
+                        value=""
+                        selected
+                        disabled
+                    >
+                        Select Brand
+                    </option>
+
+
+                    {% for brand in brands %}
+
+                        <option value="{{ brand }}">
+                            {{ brand }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- =========================
+                 MODEL
+                 ========================= -->
+
+            <div class="form-group">
+
+                <label for="model">
+                    Model
+                </label>
+
+                <select
+                    id="model"
+                    name="model"
+                    required
+                    disabled
+                >
+
+                    <option
+                        value=""
+                        selected
+                        disabled
+                    >
+                        Select Brand First
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- =========================
+                 VEHICLE AGE
+                 ========================= -->
+
+            <div class="form-group">
+
+                <label for="vehicle_age">
+                    Vehicle Age (Years)
+                </label>
+
+                <input
+                    type="number"
+                    id="vehicle_age"
+                    name="vehicle_age"
+                    min="0"
+                    step="1"
+                    placeholder="e.g. 5"
+                    required
+                >
+
+            </div>
+
+
+            <!-- =========================
+                 KM DRIVEN
+                 ========================= -->
+
+            <div class="form-group">
+
+                <label for="km_driven">
+                    Kilometers Driven
+                </label>
+
+                <input
+                    type="number"
+                    id="km_driven"
+                    name="km_driven"
+                    min="0"
+                    step="1"
+                    placeholder="e.g. 40000"
+                    required
+                >
+
+            </div>
+
+
+            <!-- =========================
+                 SELLER TYPE
+                 ========================= -->
+
+            <div class="form-group">
+
+                <label for="seller_type">
+                    Seller Type
+                </label>
+
+                <select
+                    id="seller_type"
+                    name="seller_type"
+                    required
+                >
+
+                    <option
+                        value=""
+                        selected
+                        disabled
+                    >
+                        Select Seller Type
+                    </option>
+
+
+                    {% for seller in seller_types %}
+
+                        <option value="{{ seller }}">
+                            {{ seller }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- =========================
+                 FUEL TYPE
+                 ========================= -->
+
+            <div class="form-group">
+
+                <label for="fuel_type">
+                    Fuel Type
+                </label>
+
+                <select
+                    id="fuel_type"
+                    name="fuel_type"
+                    required
+                >
+
+                    <option
+                        value=""
+                        selected
+                        disabled
+                    >
+                        Select Fuel Type
+                    </option>
+
+
+                    {% for fuel in fuel_types %}
+
+                        <option value="{{ fuel }}">
+                            {{ fuel }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- =========================
+                 TRANSMISSION
+                 ========================= -->
+
+            <div class="form-group">
+
+                <label for="transmission_type">
+                    Transmission Type
+                </label>
+
+                <select
+                    id="transmission_type"
+                    name="transmission_type"
+                    required
+                >
+
+                    <option
+                        value=""
+                        selected
+                        disabled
+                    >
+                        Select Transmission
+                    </option>
+
+
+                    {% for transmission in transmission_types %}
+
+                        <option
+                            value="{{ transmission }}"
+                        >
+                            {{ transmission }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- =========================
+                 MILEAGE
+                 ========================= -->
+
+            <div class="form-group">
+
+                <label for="mileage">
+                    Mileage
+                </label>
+
+                <input
+                    type="number"
+                    id="mileage"
+                    name="mileage"
+                    min="0"
+                    step="0.01"
+                    placeholder="e.g. 20.5"
+                    required
+                >
+
+            </div>
+
+
+            <!-- =========================
+                 ENGINE
+                 ========================= -->
+
+            <div class="form-group">
+
+                <label for="engine">
+                    Engine (CC)
+                </label>
+
+                <input
+                    type="number"
+                    id="engine"
+                    name="engine"
+                    min="0"
+                    step="0.01"
+                    placeholder="e.g. 1197"
+                    required
+                >
+
+            </div>
+
+
+            <!-- =========================
+                 MAX POWER
+                 ========================= -->
+
+            <div class="form-group">
+
+                <label for="max_power">
+                    Max Power (bhp)
+                </label>
+
+                <input
+                    type="number"
+                    id="max_power"
+                    name="max_power"
+                    min="0"
+                    step="0.01"
+                    placeholder="e.g. 82"
+                    required
+                >
+
+            </div>
+
+
+            <!-- =========================
+                 SEATS
+                 ========================= -->
+
+            <div class="form-group">
+
+                <label for="seats">
+                    Seats
+                </label>
+
+                <input
+                    type="number"
+                    id="seats"
+                    name="seats"
+                    min="1"
+                    step="1"
+                    placeholder="e.g. 5"
+                    required
+                >
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =========================
+             BUTTON
+             ========================= -->
+
+        <div class="button-container">
+
+            <button type="submit">
+                Predict Price
+            </button>
+
+        </div>
+
+
+    </form>
+
+
+    <!-- =========================
+         PREDICTION RESULT
+         ========================= -->
+
+    {% if prediction is not none %}
+
+        <div class="prediction">
+
+            <h2>
+                Estimated Car Price
+            </h2>
+
+            <div class="price">
+                ₹{{ prediction }}
+            </div>
+
+        </div>
+
+    {% endif %}
+
+
+    <a
+        href="/"
+        class="back"
+    >
+        ← Back to Home
+    </a>
+
+
+</div>
+
+
+<!-- ==================================================
+     BRAND -> MODEL JAVASCRIPT
+     ================================================== -->
+
+<script>
+
+    // Data received from Flask
+
+    const brandModels = {{ brand_models | tojson }};
+
+
+    // Get HTML elements
+
+    const brandSelect =
+        document.getElementById("brand");
+
+    const modelSelect =
+        document.getElementById("model");
+
+
+    // When brand changes
+
+    brandSelect.addEventListener(
+        "change",
+        function () {
+
+            const selectedBrand =
+                this.value;
+
+
+            // Clear existing models
+
+            modelSelect.innerHTML = "";
+
+
+            // Get models for selected brand
+
+            const models =
+                brandModels[selectedBrand] || [];
+
+
+            // If no models found
+
+            if (models.length === 0) {
+
+                const option =
+                    document.createElement("option");
+
+                option.value = "";
+
+                option.textContent =
+                    "No models available";
+
+                modelSelect.appendChild(option);
+
+                modelSelect.disabled = true;
+
+                return;
+
+            }
+
+
+            // Add default option
+
+            const defaultOption =
+                document.createElement("option");
+
+            defaultOption.value = "";
+
+            defaultOption.textContent =
+                "Select Model";
+
+            defaultOption.disabled = true;
+
+            defaultOption.selected = true;
+
+            modelSelect.appendChild(
+                defaultOption
+            );
+
+
+            // Add models
+
+            models.forEach(
+                function (model) {
+
+                    const option =
+                        document.createElement("option");
+
+                    option.value = model;
+
+                    option.textContent = model;
+
+                    modelSelect.appendChild(
+                        option
+                    );
+
+                }
+            );
+
+
+            // Enable model dropdown
+
+            modelSelect.disabled = false;
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>

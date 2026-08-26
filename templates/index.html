@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Car Price Prediction</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            min-height: 100vh;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #141e30,
+                    #243b55
+                );
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            padding: 30px 20px;
+
+        }
+
+
+        /* =====================================
+           MAIN CONTAINER
+           ===================================== */
+
+        .container {
+
+            width: 100%;
+
+            max-width: 850px;
+
+            background:
+                rgba(255, 255, 255, 0.12);
+
+            backdrop-filter: blur(10px);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.2);
+
+            border-radius: 20px;
+
+            padding: 45px 40px 30px;
+
+            text-align: center;
+
+            color: white;
+
+            box-shadow:
+                0 20px 50px
+                rgba(0, 0, 0, 0.3);
+
+        }
+
+
+        /* =====================================
+           HEADING
+           ===================================== */
+
+        h1 {
+
+            font-size: 46px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .intro {
+
+            max-width: 700px;
+
+            margin:
+                0 auto 30px;
+
+            font-size: 17px;
+
+            line-height: 1.6;
+
+            color: #e5e7eb;
+
+        }
+
+
+        /* =====================================
+           BUTTON
+           ===================================== */
+
+        .predict-button {
+
+            display: inline-block;
+
+            padding:
+                14px 35px;
+
+            background: white;
+
+            color: #243b55;
+
+            text-decoration: none;
+
+            border-radius: 30px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            transition:
+                0.3s ease;
+
+            margin-bottom: 40px;
+
+        }
+
+
+        .predict-button:hover {
+
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 8px 20px
+                rgba(0, 0, 0, 0.25);
+
+        }
+
+
+        /* =====================================
+           FEATURES
+           ===================================== */
+
+        .features {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: stretch;
+
+            gap: 20px;
+
+            width: 100%;
+
+        }
+
+
+        /* =====================================
+           FEATURE CARD
+           ===================================== */
+
+        .feature {
+
+            flex: 1;
+
+            width: 0;
+
+            min-height: 170px;
+
+            padding: 22px 15px;
+
+            background:
+                rgba(255, 255, 255, 0.14);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.2);
+
+            border-radius: 12px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            align-items: center;
+
+            transition:
+                0.3s ease;
+
+        }
+
+
+        .feature:hover {
+
+            transform:
+                translateY(-5px);
+
+            background:
+                rgba(255, 255, 255, 0.2);
+
+        }
+
+
+        /* =====================================
+           FEATURE ICON
+           ===================================== */
+
+        .feature-icon {
+
+            font-size: 30px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        /* =====================================
+           FEATURE HEADING
+           ===================================== */
+
+        .feature h3 {
+
+            font-size: 17px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        /* =====================================
+           FEATURE TEXT
+           ===================================== */
+
+        .feature p {
+
+            font-size: 12.5px;
+
+            line-height: 1.5;
+
+            color: #e5e7eb;
+
+            max-width: 190px;
+
+            margin: 0 auto;
+
+        }
+
+
+        /* =====================================
+           FOOTER
+           ===================================== */
+
+        footer {
+
+            margin-top: 35px;
+
+            font-size: 13px;
+
+            color: #d1d5db;
+
+        }
+
+
+        /* =====================================
+           MOBILE
+           ===================================== */
+
+        @media (max-width: 750px) {
+
+            .container {
+
+                padding:
+                    35px 20px 25px;
+
+            }
+
+
+            h1 {
+
+                font-size: 36px;
+
+            }
+
+
+            .intro {
+
+                font-size: 15px;
+
+            }
+
+
+            .features {
+
+                flex-direction: column;
+
+                align-items: center;
+
+            }
+
+
+            .feature {
+
+                width: 100%;
+
+                max-width: 320px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="container">
+
+
+        <!-- =====================================
+             HEADING
+             ===================================== -->
+
+        <h1>
+            Car Price Prediction
+        </h1>
+
+
+        <p class="intro">
+
+            Welcome to the Car Price Prediction App.
+            Estimate the resale price of a used car
+            using a Machine Learning model trained
+            on real-world used-car data.
+
+        </p>
+
+
+        <!-- =====================================
+             PREDICT BUTTON
+             ===================================== -->
+
+        <a
+            href="/predict"
+            class="predict-button"
+        >
+            Predict Car Price →
+        </a>
+
+
+        <!-- =====================================
+             FEATURES
+             ===================================== -->
+
+        <div class="features">
+
+
+            <!-- MACHINE LEARNING -->
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    🤖
+                </div>
+
+                <h3>
+                    Machine Learning
+                </h3>
+
+                <p>
+                    Random Forest regression
+                    model for car price prediction.
+                </p>
+
+            </div>
+
+
+            <!-- DATA DRIVEN -->
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    📊
+                </div>
+
+                <h3>
+                    Data Driven
+                </h3>
+
+                <p>
+                    Trained on approximately
+                    20,000 used-car data points
+                    from CarDekho.com.
+                </p>
+
+            </div>
+
+
+            <!-- PRICE ESTIMATION -->
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    💰
+                </div>
+
+                <h3>
+                    Price Estimation
+                </h3>
+
+                <p>
+                    Get an estimated resale value
+                    based on the car's features.
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =====================================
+             FOOTER
+             ===================================== -->
+
+        <footer>
+
+            © 2026 Atul Rawat ·
+            Built with Python · Flask · Scikit-learn
+
+        </footer>
+
+
+    </div>
+
+
+</body>
+
+</html>
