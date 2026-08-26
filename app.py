@@ -1,3 +1,4 @@
+import os
 import pickle
 import pandas as pd
 
@@ -15,16 +16,18 @@ app = Flask(__name__)
 # LOAD MODEL
 # ==========================================
 
-with open("car_price_model.pkl", "rb") as file:
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+with open(os.path.join(BASE_DIR, "car_price_model.pkl"), "rb") as file:
     model = pickle.load(file)
 
+with open(os.path.join(BASE_DIR, "preprocessor.pkl"), "rb") as file:
+    preprocessor = pickle.load(file)
 
 # ==========================================
 # LOAD PREPROCESSOR
 # ==========================================
 
-with open("preprocessor.pkl", "rb") as file:
-    preprocessor = pickle.load(file)
 
 
 # ==========================================
